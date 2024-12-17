@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sense HAT Web</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #e6f7ff, #f2f2f2);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Data Box Styles */
+        .data-box {
+            background-color: #fff;
+            display: inline-block;
+            padding: 20px 30px;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .data-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        p strong {
+            color: #007BFF;
+        }
+
+        span {
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
+            min-width: 50px;
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hiển Thị Dữ Liệu Sense HAT</h1>
+    <div class="data-box">
+        <p><strong>Nhiệt độ:</strong> <span id="nhietdo">Đang tải...</span>°C</p>
+        <p><strong>Độ ẩm:</strong> <span id="doam">Đang tải...</span>%</p>
+        <p><strong>Trạng thái Joystick:</strong> <span id="joystick">Đang tải...</span></p>
+    </div>
+
+    <footer>
+        <p>© 2024 lanmonehehe | Mô phỏng Sense HAT</p>
+    </footer>
+
+    <script>
+        // Hàm gọi API và cập nhật dữ liệu
+        function layDuLieu() {
+            fetch("/api/data")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("nhietdo").innerText = data.nhiet_do;
+                    document.getElementById("doam").innerText = data.do_am;
+                    document.getElementById("joystick").innerText = data.joystick.join(", ");
+                })
+                .catch(error => {
+                    console.error("Lỗi API:", error);
+                });
+        }
+
+        setInterval(layDuLieu, 300);
+        layDuLieu();
+    </script>
+</body>
+</html>
